@@ -12,23 +12,28 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.kkh.beeradviser.databinding.FragmentViewsBinding
 
 class ViewsFragment : Fragment(){
+
+    private var _binding: FragmentViewsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_views, container, false)
 
-        val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        _binding = FragmentViewsBinding.inflate(inflater,container,false)
+        val view = binding.root
 
-        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val pizzaGroup = view.findViewById<RadioGroup>(R.id.pizza_group)
-            val pizzaType = pizzaGroup.checkedRadioButtonId
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+
+        binding.fab.setOnClickListener {
+
+            val pizzaType = binding.pizzaGroup.checkedRadioButtonId
             if (pizzaType == -1) {
                 val text = "You need to choose a pizza type"
                 Toast.makeText(activity, text, Toast.LENGTH_LONG).show()
@@ -37,16 +42,18 @@ class ViewsFragment : Fragment(){
                     R.id.radio_diavolo -> "Diavolo pizza"
                     else -> "Funghi pizza"
                 })
-                val parmesan = view.findViewById<Chip>(R.id.parmesan)
-                text += if (parmesan.isChecked) ", extra parmesan" else ""
-                val ChiliOil = view.findViewById<Chip>(R.id.chili_oil)
-                text += if (ChiliOil.isChecked) ", extra Chili oil" else ""
-                Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show()
+
+                text += if (binding.parmesan.isChecked) ", extra parmesan" else ""
+
+                text += if (binding.chiliOil.isChecked) ", extra Chili oil" else ""
+                Snackbar.make(binding.fab, text, Snackbar.LENGTH_LONG).show()
             }
         }
         return view
+    }
 
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
