@@ -10,28 +10,14 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/beer_color"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:entries="@array/beer_colors" />
 
-    <Button
-        android:id="@+id/find_beer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/find_beer" />
-
-    <TextView
-        android:id="@+id/brands"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/brands" />
-
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_host_fragment"
+        app:navGraph="@navigation/nav_graph"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true" />
 
 
 </LinearLayout>
