@@ -3,7 +3,6 @@ package com.kkh.beeradviser
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
 class GameViewModel : ViewModel() {
     private val words = listOf("Android", "Activity", "Fragment")
     private val secretWord = words.random().uppercase()
@@ -53,7 +52,7 @@ class GameViewModel : ViewModel() {
 
     private fun isWon() = secretWord.equals(secretWordDisplay.value, true)
 
-    private fun isLost() = (livesLeft.value ?: 0) <= 0
+    private fun isLost() = livesLeft.value ?: 0 <= 0
 
     fun wonLostMessage() : String {
         var message = ""
@@ -61,5 +60,9 @@ class GameViewModel : ViewModel() {
         else if (isLost()) message = "You lost!"
         message += " The word was $secretWord."
         return message
+    }
+
+    fun finishGame() {
+        _gameOver.value = true
     }
 }
