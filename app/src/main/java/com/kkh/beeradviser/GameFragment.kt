@@ -1,119 +1,50 @@
 package com.kkh.beeradviser
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.kkh.beeradviser.databinding.FragmentGameBinding
 
-/*
 class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
-
-    val words = listOf("Android", "Activity", "Fragment")
-    val secretWord = words.random().uppercase()
-    var secretWordDisplay = ""
-    var incorrectGuesses = ""
-    var correctGuesses  = ""
-    var livesLeft = 8
+    lateinit var viewModel: GameViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGameBinding.inflate(inflater, container, false)
         val view = binding.root
+        viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-        secretWordDisplay = derivedSecretWordDisplay()
-        updateScreen()
+        viewModel.incorrectGuesses.observe(viewLifecycleOwner, Observer { newValue ->
+            binding.incorrectGuesses.text = "Incorrect guesses: $newValue"
+        })
 
-        binding.guessButton.setOnClickListener() {
-            makeGuess(binding.guess.text.toString().uppercase())
-            binding.guess.text = null
-            updateScreen()
-            if (isWon() || isLost()) {
-                val action = GameFragmentDirections
-                    .actionGameFragmentToResultFragment(wonLostMessage())
-                view.findNavController().navigate(action)
-            }
-        }
-        return view
-    }
+        viewModel.livesLeft.observe(viewLifecycleOwner, Observer { newValue ->
+            binding.lives.text = "You have $newValue lives left"
+        })
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+        viewModel.secretWordDisplay.observe(viewLifecycleOwner, Observer { newValue ->
+            binding.word.text = newValue
+        })
 
-    fun updateScreen() {
-        binding.word.text = secretWordDisplay
-        binding.lives.text = "You have ${livesLeft} lives left."
-        binding.incorrectGuesses.text = "Incorrect guesses: ${incorrectGuesses}"
-    }
-
-    fun derivedSecretWordDisplay(): String{
-        var display = ""
-        secretWord.forEach {
-            display += checkLetter(it.toString())
-        }
-        return display
-    }
-    fun checkLetter(str: String) = when (correctGuesses.contains(str)) {
-        true -> str
-        false -> "_"
-    }
-
-    fun makeGuess(guess: String) {
-        if (guess.length == 1) {
-            if(secretWord.contains(guess)) {
-                correctGuesses += guess
-                secretWordDisplay = derivedSecretWordDisplay()
-            }
-            else{
-                livesLeft--
-                correctGuesses += "$guess "
-            }
-        }
-    }
-
-    fun isWon() = secretWord.equals(secretWordDisplay, true)
-
-    fun isLost() = livesLeft <= 0
-
-    fun wonLostMessage(): String{
-        var message = ""
-        if (isWon()) message = "You won!"
-        else if (isLost()) message = "You lost!"
-        message += " The word was $secretWord."
-        return message
-    }
-}*/
-
-class GameFragment : Fragment() {
-    private var _binding: FragmentGameBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: GameViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentGameBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-
-        updateScreen()
-
-        binding.guessButton.setOnClickListener() {
-            viewModel.makeGuess(binding.guess.text.toString().uppercase())
-            binding.guess.text = null
-            updateScreen()
-            if (viewModel.isWon() || viewModel.isLost()) {
+        viewModel.gameOver.observe(viewLifecycleOwner, Observer { newValue ->
+            if (newValue) {
                 val action = GameFragmentDirections
                     .actionGameFragmentToResultFragment(viewModel.wonLostMessage())
                 view.findNavController().navigate(action)
             }
+        })
+
+        binding.guessButton.setOnClickListener() {
+            viewModel.makeGuess(binding.guess.text.toString().uppercase())
+            binding.guess.text = null
         }
         return view
     }
@@ -121,11 +52,5 @@ class GameFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    fun updateScreen() {
-        binding.word.text = viewModel.secretWordDisplay
-        binding.lives.text = "You have ${viewModel.livesLeft} lives left."
-        binding.incorrectGuesses.text = "Incorrect guesses: ${viewModel.incorrectGuesses}"
     }
 }
