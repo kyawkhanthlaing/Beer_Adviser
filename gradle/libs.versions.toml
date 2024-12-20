@@ -12,12 +12,14 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 navigation = "2.8.5"
 ksp = "2.0.21-1.0.27"
+recyclerview = "1.3.2"
 roomCompiler = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-runtime = {module = "androidx.room:room-runtime" , version.ref="roomCompiler"}
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref="roomCompiler"}
