@@ -1,12 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.safe.args)
 }
 
 android {
     namespace = "com.kkh.beeradviser"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.kkh.beeradviser"
@@ -52,5 +53,9 @@ dependencies {
     implementation(libs.androidx.nav.fragment)
     implementation(libs.androidx.nav.ui)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
 
 }
