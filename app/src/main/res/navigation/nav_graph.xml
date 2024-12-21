@@ -3,29 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/gameFragment">
-
+    app:startDestination="@id/tasksFragment">
     <fragment
-        android:id="@+id/gameFragment"
-        android:name="com.kkh.beeradviser.GameFragment"
-        android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
+        android:id="@+id/tasksFragment"
+        android:name="com.kkh.beeradviser.TasksFragment"
+        android:label="fragment_tasks"
+        tools:layout="@layout/fragment_tasks" >
         <action
-            android:id="@+id/action_gameFragment_to_resultFragment"
-            app:destination="@id/resultFragment"
-            app:popUpTo="@id/gameFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_tasksFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
     </fragment>
     <fragment
-        android:id="@+id/resultFragment"
-        android:name="com.kkh.beeradviser.ResultFragment"
-        android:label="fragment_result"
-        tools:layout="@layout/fragment_result" >
+        android:id="@+id/editTaskFragment"
+        android:name="com.kkh.beeradviser.EditTaskFragment"
+        android:label="fragment_edit_task"
+        tools:layout="@layout/fragment_edit_task" >
         <argument
-            android:name="result"
-            app:argType="string" />
+            android:name="taskId"
+            app:argType="long" />
         <action
-            android:id="@+id/action_resultFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            android:id="@+id/action_editTaskFragment_to_tasksFragment"
+            app:destination="@id/tasksFragment"
+            app:popUpTo="@id/tasksFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
